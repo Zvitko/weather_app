@@ -1,6 +1,3 @@
-// Import the dotenv package
-require('dotenv').config();
-
 const locationInput = document.querySelector("#location-input");
 const submitButton = document.querySelector("#submit-btn");
 const weatherInfo = document.querySelector("#weather-info");
@@ -11,28 +8,24 @@ submitButton.addEventListener("click", function() {
   fetchWeatherData(locationInput.value);
 });
 
-// Function to fetch weather data from the API
+// Function to fetch weather data from the serverless function
 const fetchWeatherData = async (location) => {
-  const apiKey = process.env.API_KEY;
-  const apiUrl = 'https://api.weatherapi.com/v1/current.json';
-
   // Show loading state
   loadingDiv.style.display = 'block';
   weatherInfo.style.visibility = 'hidden';
   errorDiv.style.display = 'none';
 
   try {
-    const response = await fetch(`${apiUrl}?key=${apiKey}&q=${location}`);
+    const response = await fetch('/.netlify/functions/weather', {
+      method: 'POST',
+      body: JSON.stringify({ location }),
+    });
 
     // Hide loading state
     loadingDiv.style.display = 'none';
 
     if (response.ok) {
-      const data = await response.json();
-
-      // Extract relevant weather information from the API response
-      const temperature = data.current.temp_c;
-      const condition = data.current.condition.text;
+      const { temperature, condition } = await response.json();
 
       // Display the weather information
       weatherInfo.style.visibility = 'visible';
@@ -50,5 +43,3 @@ const fetchWeatherData = async (location) => {
     console.log('Error fetching weather data:', error);
   }
 };
-
-// No need to export in a browser environment
