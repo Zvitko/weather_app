@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Weather App</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
@@ -12,8 +12,9 @@
     <div id="weather-info">
       <h2>Enter your location and click "Get Weather" to see the forecast.</h2>
     </div>
+    <div id="loading" style="display: none;">Loading...</div>
+    <div id="error" style="display: none;"></div>
   </div>
-
   <script src="app.js"></script>
 </body>
 </html>
